@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 public static class Arrays
 {
     /// <summary>
@@ -8,12 +10,23 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
-
-        return []; // replace this return statement with your own
+        //create the numbers array to insert the multiples of a number
+        double[] numbers = new double[length];
+        // stablish the index to 0 to access the first space in the array 
+        int index = 0;
+        // a for loop to go to all the multiples within the lenght given 
+        for (int i = 1; i <= length; ++i)
+        {
+            //use the i value to multiply by the number given to find the multiples of the number and store it in a variable
+            double value = i * number;
+            //use the indexvalue to add the multiples to the the space available in the array 
+            numbers[index] = value;
+            //increment the index by 1 to access the next place in the array
+            index++;
+            
+        } 
+        // return the array
+        return numbers; 
     }
 
     /// <summary>
@@ -25,9 +38,22 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+
+        // the idea in general is to divided the list and then putter together in the correct order.
+        // get the last index using count - 1;
+        var last_index = data.Count - amount;
+        // in the first variable use Get Range with the amount 
+        // parameter to get the part of the list that will be moved
+        var data_a = data.GetRange(last_index, amount);
+        // in the second variable user Get Range with the last index 
+        // parameter to get the ramaining part of the list that will 
+        // be displayed at the end of the list
+        var data_b = data.GetRange(0, last_index);
+        // using addRange add the second list to the first list, addRange adds it to the end
+        // the order would be first side A then side B 
+        data_a.AddRange(data_b);
+        // clear the original list and add the new list to it
+        data.Clear();
+        data.AddRange(data_a);
     }
 }

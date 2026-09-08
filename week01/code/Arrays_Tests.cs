@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using System.Diagnostics;
 // DO NOT MODIFY THIS FILE
 
 [TestClass]
@@ -9,7 +9,9 @@ public class MultiplesOfTests
     public void TestMultiplesOf_Whole()
     {
         double[] multiples = Arrays.MultiplesOf(7, 5);
+        Debug.WriteLine(string.Join(", ", multiples));
         CollectionAssert.AreEqual(new double[] { 7, 14, 21, 28, 35 }, multiples);
+
     }
 
     [TestMethod]
