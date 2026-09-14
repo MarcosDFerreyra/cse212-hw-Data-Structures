@@ -10,7 +10,9 @@
         queue.Enqueue(100);
         var value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found:
+        // Defect(s) Found: the error was that the Dequeue function was eliminating and returning the 
+        // item in the index 1 of the list instead of the item in index 0. This was fixed by changing 
+        // the index to 0 in the Dequeue function.
 
         Console.WriteLine("------------");
 
@@ -28,7 +30,9 @@
         Console.WriteLine(value);
         value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found: 
+        // Defect(s) Found: the problem was that in each Enqueue the value was inserted 
+        // in the index 0, moving every other previous value, so the First value was 
+        // the last and last was the first
 
         Console.WriteLine("------------");
 
@@ -44,7 +48,7 @@
         catch (IndexOutOfRangeException) {
             Console.WriteLine("I got the exception as expected.");
         }
-        // Defect(s) Found: 
+        // Defect(s) Found: none
     }
 
     private readonly List<int> _queue = new();
@@ -54,7 +58,14 @@
     /// </summary>
     /// <param name="value">Integer value to add to the queue</param>
     private void Enqueue(int value) {
-        _queue.Insert(0, value);
+        int index = 0;
+        if (_queue.Count > 0)
+        {
+            index = _queue.Count;
+        }
+        _queue.Insert(index, value);
+        
+        
     }
 
     /// <summary>
@@ -66,8 +77,8 @@
         if (_queue.Count <= 0)
             throw new IndexOutOfRangeException();
 
-        var value = _queue[1];
-        _queue.RemoveAt(1);
+        var value = _queue[0];
+        _queue.RemoveAt(0);
         return value;
     }
 }
