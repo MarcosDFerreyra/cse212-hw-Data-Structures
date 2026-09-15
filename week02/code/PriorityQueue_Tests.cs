@@ -28,8 +28,7 @@ public class PriorityQueueTests
     [TestMethod]
     // Scenario:test which of two items with the same priority is dequeued first. 
     // Expected Result:  the item3 is dequeue
-    // Defect(s) Found: the last item between the two items with the same priority was 
-    // being dequeued first because the for loop was using >= instead of > when comparing priorities
+    // Defect(s) Found: the last item between the two items with the same priority was being dequeued first because the for loop was using >= instead of > when comparing priorities
     public void TestPriorityQueue_2()
     {
         var priorityQueue = new PriorityQueue();
@@ -65,25 +64,26 @@ public class PriorityQueueTests
     }
 
     [TestMethod]
-    // Scenario: test if the item with the highest priority is dequeued and then re-enqueued
-    // Expected Result: the item1 is dequeued first and then re-enqueued with a higher priority, 
-    // so it should be dequeued again before item2 and item3 to see if the item1 came back correctly to the queue with the new priority
-    // Defect(s) Found: no problems found
+    // Scenario: dequeue an item without saving its return value, then immediately dequeue again 
+    // without any other enqueue in between, to check if the first dequeued item was actually 
+    // removed from the queue.
+    // Expected Result: item2 should be removed on the first Dequeue, so the second Dequeue 
+    // should return item1 (the only item left in the queue).
+    // Defect(s) Found: the item2 was not being removed from the queue after the first Dequeue, 
+    // so the second Dequeue was returning item2 again instead of item1. this happend because no 
+    // item was being removed from the queue at any point of the dequeue method
+    //
     public void TestPriorityQueue_4()
     {
         var priorityQueue = new PriorityQueue();
         var item1 = "item 1";
         var item2 = "item 2";
-        var item3 = "item 3";
 
         priorityQueue.Enqueue(item1, 1);
-        priorityQueue.Enqueue(item2, 1);
-        priorityQueue.Enqueue(item3, 1);
+        priorityQueue.Enqueue(item2, 2);
 
-        var info = priorityQueue.Dequeue();
-        priorityQueue.Enqueue(info, 2);
+        priorityQueue.Dequeue();
         var info2 = priorityQueue.Dequeue();
-
 
         Assert.AreEqual("item 1", info2);
     }
