@@ -11,24 +11,40 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: client adds a new customer to the queue. all information is valid. after we remove the customer from the queue, the queue is empty. 
+        // Expected Result: the queue is empty.
         Console.WriteLine("Test 1");
-
-        // Defect(s) Found: 
+        var customer_service = new CustomerService(10);
+        customer_service.AddNewCustomer();
+        Console.WriteLine(customer_service);
+        customer_service.ServeCustomer();
+        Console.WriteLine(customer_service);
+        // Defect(s) Found: an error occurs when trying to serve a customer from an empty queue.
+        // the solution was to save the information of the customer to a variable before removing it from the queue.  
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: client attempts to add a new customer to a full queue.
+        // Expected Result: an error message is displayed indicating that the queue is full.
         Console.WriteLine("Test 2");
-
-        // Defect(s) Found: 
-
+        var customer_service_2 = new CustomerService(1);
+        customer_service_2.AddNewCustomer();
+        customer_service_2.AddNewCustomer();
+        Console.WriteLine(customer_service_2);
+        // Defect(s) Found: no error message is displayed when trying to add a new customer to a full queue.
+        // solution was to not only check if the size of the queue is greater, but also equal to the max size before adding a new customer to the queue.
         Console.WriteLine("=================");
 
-        // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: client attempts to add a new customer to a full queue.
+        // Expected Result: an error message is displayed indicating that the queue is full.
+        Console.WriteLine("Test 3");
+        var customer_service_3 = new CustomerService(4);
+        customer_service_3.ServeCustomer();
+        // Defect(s) Found: no error message is displayed when trying to add a new customer to a full queue.
+        // solution was to not only check if the size of the queue is greater, but also equal to the max size before adding a new customer to the queue.
+        Console.WriteLine("=================");
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +83,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,8 +104,13 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        if (_queue.Count == 0)
+        {
+            Console.WriteLine("No customers to serve");
+            return;
+        }
         var customer = _queue[0];
+        _queue.RemoveAt(0);
         Console.WriteLine(customer);
     }
 
