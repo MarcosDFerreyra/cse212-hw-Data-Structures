@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 public class Translator
 {
     public static void Run()
@@ -9,6 +11,8 @@ public class Translator
         Console.WriteLine(englishToGerman.Translate("Car")); // Auto
         Console.WriteLine(englishToGerman.Translate("Plane")); // Flugzeug
         Console.WriteLine(englishToGerman.Translate("Train")); // ???
+        Console.WriteLine(englishToGerman.Translate("House")); // Haus
+
     }
 
     private Dictionary<string, string> _words = new();
@@ -24,7 +28,7 @@ public class Translator
     /// <returns>fixed array of divisors</returns>
     public void AddWord(string fromWord, string toWord)
     {
-        // ADD YOUR CODE HERE
+        _words.Add(fromWord, toWord);
     }
 
     /// <summary>
@@ -34,7 +38,10 @@ public class Translator
     /// <returns>The translated word or "???" if no translation is available</returns>
     public string Translate(string fromWord)
     {
-        // ADD YOUR CODE HERE
-        return "";
+        if (_words.ContainsKey(fromWord))
+        {
+            return _words[fromWord];
+        }
+        return "???";
     }
 }
