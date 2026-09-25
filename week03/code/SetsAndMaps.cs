@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Data.Common;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -21,8 +23,19 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var set = new HashSet<string>(words);
+        var wordList = new List<string>();
+
+        foreach (string word in set)
+        {
+            string reversed = new string(word.Reverse().ToArray());
+            if (word != reversed && set.Contains(reversed))
+            {
+                wordList.Add($"{word} & {reversed}");
+                set.Remove(word);
+            }
+        }
+        return wordList.ToArray();
     }
 
     /// <summary>
@@ -42,7 +55,16 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            if (!degrees.ContainsKey(degree))
+            {
+                degrees.Add(degree, 1);
+            }
+            else
+            {
+                degrees[degree] += 1;
+            }
+
         }
 
         return degrees;
@@ -66,8 +88,38 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var dictionary = new Dictionary<char, int>();
+        var first_word = word1.Replace(" ","").ToLower();
+        var second_word = word2.Replace(" ","").ToLower();
+        if (first_word.Length != second_word.Length)
+            return false;
+
+        foreach (var letter in first_word)
+        {
+            if (!dictionary.ContainsKey(letter))
+            {
+                dictionary.Add(letter, 1);
+            }
+            else
+            {
+                dictionary[letter] += 1;
+            }
+        }
+        foreach (var letter in second_word)
+        {
+            if (dictionary.ContainsKey(letter) && dictionary[letter] > 1)
+            {
+                dictionary[letter] -= 1;
+            }
+            else if (dictionary.ContainsKey(letter))
+                dictionary.Remove(letter);
+        }
+        if (dictionary.Count > 0)
+            return false;
+        
+        else 
+            return true;
+
     }
 
     /// <summary>

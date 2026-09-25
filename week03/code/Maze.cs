@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 /// <summary>
 /// Defines a maze using a dictionary. The dictionary is provided by the
 /// user when the Maze object is created. The dictionary will contain the
@@ -32,7 +34,18 @@ public class Maze
     /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
+        if (_currX == 1)
+            throw new InvalidOperationException("Can't go that way!");
+        else
+        {
+            var position = (_currX, _currY);
+            var value = _mazeMap[position];
+            if (value[0] == false)
+                throw new InvalidOperationException("Can't go that way!");
+            else
+                _currX -= 1;
+        }
+
     }
 
     /// <summary>
@@ -41,7 +54,18 @@ public class Maze
     /// </summary>
     public void MoveRight()
     {
-        // FILL IN CODE
+        if (_currX == 6)
+            throw new InvalidOperationException("Can't go that way!");
+
+        else
+        {
+            var position = (_currX, _currY);
+            var value = _mazeMap[position];
+            if (value[1] == false)
+                throw new InvalidOperationException("Can't go that way!");
+            else
+                _currX += 1;
+        }
     }
 
     /// <summary>
@@ -50,7 +74,18 @@ public class Maze
     /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+        if (_currY == 1)
+            throw new InvalidOperationException("Can't go that way!");
+
+        else
+        {
+            var position = (_currX, _currY);
+            var value = _mazeMap[position];
+            if (value[2] == false)
+                throw new InvalidOperationException("Can't go that way!");
+            else
+                _currY -= 1;
+        }
     }
 
     /// <summary>
@@ -59,7 +94,18 @@ public class Maze
     /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        if (_currY == 6)
+            throw new InvalidOperationException("Can't go that way!");
+
+        else
+        {
+            var position = (_currX, _currY);
+            var value = _mazeMap[position];
+            if (value[3] == false)
+                throw new InvalidOperationException("Can't go that way!");
+            else
+                _currY += 1;
+        }
     }
 
     public string GetStatus()
