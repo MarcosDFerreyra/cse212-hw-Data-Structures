@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Globalization;
+using Microsoft.VisualBasic;
 
 public class LinkedList : IEnumerable<int>
 {
@@ -32,7 +34,18 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        Node newNode = new(value);
+        if (_tail == null)
+        {
+            _tail = newNode;
+            _head = newNode;
+        }
+        else
+        {
+            _tail.Next = newNode;
+            newNode.Prev = _tail;
+            _tail = newNode;
+        }
     }
 
 
@@ -64,7 +77,17 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // TODO Problem 2
+        if (_tail == null) return;
+
+        if (_tail == _head)
+        {
+            _tail = null;
+            _head = null;
+            return;
+        }
+        _tail.Prev!.Next = null;
+        _tail = _tail.Prev;
+
     }
 
     /// <summary>
@@ -108,7 +131,26 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
-        // TODO Problem 3
+
+        Node? current = _head;
+        while (current != null)
+        {
+            if (current.Data == value)
+            {
+
+                if (_head == current)
+                    RemoveHead();
+                else if (_tail == current)
+                    RemoveTail();
+                else
+                {
+                    current.Prev!.Next = current.Next;
+                    current.Next!.Prev = current.Prev;
+                }
+                return;
+            }
+            current = current!.Next;
+        }
     }
 
     /// <summary>
@@ -116,7 +158,29 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Replace(int oldValue, int newValue)
     {
-        // TODO Problem 4
+        Node? current = _head;
+
+        while (current != null)
+        {
+            if (current.Data == oldValue)
+            {
+                Node newNode = new(newValue);
+
+                newNode.Next = current.Next;
+                newNode.Prev = current.Prev;
+
+                if (current.Next != null)
+                    current.Next.Prev = newNode;
+                else
+                    _tail = newNode;
+                if (current.Prev != null)
+                    current.Prev.Next = newNode;
+                else
+                    _head = newNode;
+            }
+            current = current.Next;
+
+        }
     }
 
     /// <summary>
@@ -168,8 +232,10 @@ public class LinkedList : IEnumerable<int>
     }
 }
 
-public static class IntArrayExtensionMethods {
-    public static string AsString(this IEnumerable array) {
+public static class IntArrayExtensionMethods
+{
+    public static string AsString(this IEnumerable array)
+    {
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
 }
